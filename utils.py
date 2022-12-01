@@ -39,6 +39,7 @@ def get_data(year, day, sessions, integers=False):
         if r.status_code == 200:
             with open(f'data/{day}.txt', 'w') as file:
                 file.write(r.text)
+            open(f'data/{day}-example.txt', 'w').close()
         else:
             sys.exit(f"/api/alerts response: {r.status_code}: {r.reason} \n{r.content}")
 
