@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw
 from collections import Counter, defaultdict
 from codetiming import Timer
 
-from utils import rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data
+from utils import rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list
 
 YEAR = 2022
 DAY = 1
@@ -31,29 +31,32 @@ t0 = Timer(name="Parsing", text="Parsing done: \t{seconds:.0f} s")
 #Input parsing
 with t0:
     data = get_data(YEAR, DAY, SESSIONS)
-    print(data)
-    # input = [l.strip() for l in open(FILENAME).readlines()]
-    input = 0
+    # data = get_example(DAY)
+    data = split_list(data)
+
+
+
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{seconds:.0f} s")
-def part1(input):
+def part1(data):
     sol1 = 0
+    sol1 = max([sum([int(x) for x in elf]) for elf in data])
     return sol1
 
 
 # Part 2
 @Timer(name="Part 2", text="Part 2 done: \t{seconds:.0f} s")
-def part2(input):
+def part2(data):
     sol2 = 0
-
+    sol2 = sum(sorted([sum([int(x) for x in elf]) for elf in data], reverse=True)[:3])
     return sol2
 
 
 
 
-s1 = part1(input)
-s2 = part2(input)
+s1 = part1(data)
+s2 = part2(data)
 
 if TEST:
     print("\n======================\nTesting environment:\n======================")

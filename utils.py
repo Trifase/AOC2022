@@ -1,5 +1,5 @@
 import re
-import dataclassy as dataclass
+from dataclassy import dataclass
 
 # Utilities
 def rematch(pattern, string):
@@ -26,7 +26,7 @@ class Point:
     x: str
     y: str
 
-def get_data(year, day, sessions):
+def get_data(year, day, sessions, integers=False):
     import os.path
     import requests
     import sys
@@ -43,5 +43,20 @@ def get_data(year, day, sessions):
             sys.exit(f"/api/alerts response: {r.status_code}: {r.reason} \n{r.content}")
 
     data = open(f'data/{day}.txt', 'r')
-    return [l.strip() for l in data.readlines()]
+    if integers:
+        return [int(l.strip()) for l in data.readlines()]
+    else:
+        return [l.strip() for l in data.readlines()]
 
+def get_example(day, integers=False):
+    with open(f'data/{day}-example.txt', 'r') as file:
+        if integers:
+            return [int(l.strip()) for l in file.readlines()]
+        else:
+            return [l.strip() for l in file.readlines()]
+
+def split_list(list):
+    l = []
+    for y in '\n'.join(list).split('\n\n'):
+        l.append([x for x in y.split('\n')])
+    return l
