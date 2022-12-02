@@ -10,26 +10,14 @@ from PIL import Image, ImageDraw
 from collections import Counter, defaultdict
 from codetiming import Timer
 
-from utils import rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list
+from utils import SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list
 
 YEAR = 2022
 DAY = 2
-TEST = 0
-SESSIONS = [
-    '53616c7465645f5fa84dc053d6450788a4e374255929271bab87b5571810b6b409d259985976f323a7d689eec97c6cec3ffd7edcba32898480c58f3d345323b7',
-    '53616c7465645f5f31bd76685552b94983dce5c1a20ee21a319c38307f1aded11ec8cac034efc583a546d4d53d1f360cc9b8b75bd8694953df05f00bf1af3d31'
-    ]
-
-if TEST:
-    FILENAME = f"data/{DAY:02d}-esempio.txt"
-else:
-    FILENAME = f"data/{DAY:02d}.txt"
-
-t0 = Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms")
 
 
 #Input parsing
-with t0:
+with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     data = get_data(YEAR, DAY, SESSIONS)
     # data = get_example(DAY)
 
@@ -61,22 +49,22 @@ def outcome(a, b):
     a = rps.get(a)
     b = rps.get(b)
     if a == b:
-        return 3
+        return 3  # pareggio
     elif a == "rock" and b == 'paper':
-        return 6
+        return 6  # vittoria
     elif a == 'paper' and b == 'scissor':
         return 6
     elif a == 'scissor' and b == 'rock':
         return 6
     else:
-        return 0
+        return 0  # perdita
 
 def what_to_play(a, b):
     match b:
-        case 'Y': # pareggio
+        case 'Y':  # pareggio
             return equivalent.get(a)
 
-        case 'Z': # vittoria
+        case 'Z':  # vittoria
             match a:
                 case 'A':
                     return 'Y'
@@ -85,7 +73,7 @@ def what_to_play(a, b):
                 case 'C':
                     return 'X'
 
-        case 'X': # perdita
+        case 'X':  # perdita
             match a:
                 case 'A':
                     return 'Z'
