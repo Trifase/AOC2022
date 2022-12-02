@@ -72,22 +72,27 @@ def outcome(a, b):
         return 0
 
 def what_to_play(a, b):
-    if b == 'Y': # pareggio
-        return map_same.get(a)
-    if b == 'Z': # vittoria
-        if a == 'A':
-            return 'Y'
-        if a == 'B':
-            return 'Z'
-        if a == 'C':
-            return 'X'
-    if b == 'X': # perdita
-        if a == 'A':
-            return 'Z'
-        if a == 'B':
-            return 'X'
-        if a == 'C':
-            return 'Y'
+    match b:
+        case 'Y': # pareggio
+            return map_same.get(a)
+
+        case 'Z': # vittoria
+            match a:
+                case 'A':
+                    return 'Y'
+                case 'B':
+                    return 'Z'
+                case 'C':
+                    return 'X'
+
+        case 'X': # perdita
+            match a:
+                case 'A':
+                    return 'Z'
+                case 'B':
+                    return 'X'
+                case 'C':
+                    return 'Y'
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
@@ -117,7 +122,7 @@ def part2(data):
 s1 = part1(data)
 s2 = part2(data)
 
-
+print("=========================")
 print(f"Soluzione Parte 1: [{s1}]")
 print(f"Soluzione Parte 2: [{s2}]")
 
