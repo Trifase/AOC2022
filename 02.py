@@ -50,7 +50,7 @@ rps = {
     'C': "scissor"
 }
 
-map_same = {
+equivalent = {
     'A': 'X',
     'B': 'Y',
     'C': 'Z'
@@ -74,7 +74,7 @@ def outcome(a, b):
 def what_to_play(a, b):
     match b:
         case 'Y': # pareggio
-            return map_same.get(a)
+            return equivalent.get(a)
 
         case 'Z': # vittoria
             match a:
