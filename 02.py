@@ -21,47 +21,102 @@ SESSIONS = [
     ]
 
 if TEST:
-    FILENAME = f"data/{DAY:02d}-test.txt"
+    FILENAME = f"data/{DAY:02d}-esempio.txt"
 else:
     FILENAME = f"data/{DAY:02d}.txt"
 
-t0 = Timer(name="Parsing", text="Parsing done: \t{seconds:.0f} s")
+t0 = Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms")
 
 
 #Input parsing
 with t0:
     data = get_data(YEAR, DAY, SESSIONS)
     # data = get_example(DAY)
-    # data = split_list(data)
+
+    # print(data)
+
+points = {
+    'X': 1,
+    'Y': 2,
+    'Z': 3
+}
+
+rps = {
+    'X': "rock",
+    'A': "rock",
+    'Y': "paper",
+    'B': "paper",
+    'Z': "scissor",
+    'C': "scissor"
+}
+
+map_same = {
+    'A': 'X',
+    'B': 'Y',
+    'C': 'Z'
+}
 
 
+def outcome(a, b):
+    a = rps.get(a)
+    b = rps.get(b)
+    if a == b:
+        return 3
+    elif a == "rock" and b == 'paper':
+        return 6
+    elif a == 'paper' and b == 'scissor':
+        return 6
+    elif a == 'scissor' and b == 'rock':
+        return 6
+    else:
+        return 0
 
+def what_to_play(a, b):
+    if b == 'Y': # pareggio
+        return map_same.get(a)
+    if b == 'Z': # vittoria
+        if a == 'A':
+            return 'Y'
+        if a == 'B':
+            return 'Z'
+        if a == 'C':
+            return 'X'
+    if b == 'X': # perdita
+        if a == 'A':
+            return 'Z'
+        if a == 'B':
+            return 'X'
+        if a == 'C':
+            return 'Y'
 
 # Part 1
-@Timer(name="Part 1", text="Part 1 done: \t{seconds:.0f} s")
+@Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
 def part1(data):
     sol1 = 0
-
+    for game in data:
+        a, b = game.split()
+        p = outcome(a, b) + points.get(b)
+        # print(f"{game} -> {p}")
+        sol1 += p
     return sol1
 
 
 # Part 2
-@Timer(name="Part 2", text="Part 2 done: \t{seconds:.0f} s")
+@Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data):
     sol2 = 0
-    
+    for game in data:
+        a, b = game.split()
+        b = what_to_play(a, b)
+        p = outcome(a, b) + points.get(b)
+        # print(f"{game}: devo giocare {b}, la giocata diventa {a} {b} -> {p}")
+        sol2 += p
     return sol2
-
-
 
 
 s1 = part1(data)
 s2 = part2(data)
 
-if TEST:
-    print("\n======================\nTesting environment:\n======================")
-else:
-    print("\n======================")
 
 print(f"Soluzione Parte 1: [{s1}]")
 print(f"Soluzione Parte 2: [{s2}]")

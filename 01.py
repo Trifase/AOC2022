@@ -25,20 +25,23 @@ if TEST:
 else:
     FILENAME = f"data/{DAY:02d}.txt"
 
-t0 = Timer(name="Parsing", text="Parsing done: \t{seconds:.0f} s")
+t0 = Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms")
 
 
 #Input parsing
 with t0:
     data = get_data(YEAR, DAY, SESSIONS)
-    # data = get_example(DAY)
+
+    data = get_example(DAY)
+
     data = split_list(data)
+    # print(data)
 
 
 
 
 # Part 1
-@Timer(name="Part 1", text="Part 1 done: \t{seconds:.0f} s")
+@Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
 def part1(data):
     sol1 = 0
     sol1 = max([sum([int(x) for x in elf]) for elf in data])
@@ -46,7 +49,7 @@ def part1(data):
 
 
 # Part 2
-@Timer(name="Part 2", text="Part 2 done: \t{seconds:.0f} s")
+@Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data):
     sol2 = 0
     sol2 = sum(sorted([sum([int(x) for x in elf]) for elf in data], reverse=True)[:3])
