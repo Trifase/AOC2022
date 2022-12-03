@@ -32,11 +32,19 @@ class Point:
     x: str
     y: str
 
-def get_data(year, day, sessions, integers=False):
+
+def split_in_chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+def get_data(year, day, sessions, integers=False, example=False):
     import os.path
     import requests
     import sys
-    
+
+    if not os.path.isfile(f'data/{day}-example.txt'):
+        open(f'data/{day}-example.txt', 'w').close()
+
     if not os.path.isfile(f'data/{day}.txt'):
         url = f"https://adventofcode.com/{str(year)}/day/{str(day)}/input"
         headers = {'Cookie': f'session={sessions[0]}'}
@@ -45,11 +53,14 @@ def get_data(year, day, sessions, integers=False):
         if r.status_code == 200:
             with open(f'data/{day}.txt', 'w') as file:
                 file.write(r.text)
-            open(f'data/{day}-example.txt', 'w').close()
         else:
             sys.exit(f"/api/alerts response: {r.status_code}: {r.reason} \n{r.content}")
 
-    data = open(f'data/{day}.txt', 'r')
+    if example:
+        data = open(f'data/{day}-example.txt', 'r')
+    else:
+        data = open(f'data/{day}.txt', 'r')
+
     if integers:
         return [int(l.strip()) for l in data.readlines()]
     else:
