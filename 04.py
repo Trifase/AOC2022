@@ -13,30 +13,27 @@ from codetiming import Timer
 from utils import SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list, split_in_chunks
 
 YEAR = 2022
-DAY = 3
+DAY = 4
 
 
 #Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
-    data = get_data(YEAR, DAY, SESSIONS, example=True)
+    data = get_data(YEAR, DAY, SESSIONS, example=False)
 
 # print(data)
 
-
-def get_priority(common_item):
-    letters = "0abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    return list(letters).index(list(common_item)[0])
 
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
 def part1(data):
     sol1 = 0
-    for rucksack in data:
-        common_item = set(rucksack[:(len(rucksack)//2)]).intersection(set(rucksack[(len(rucksack)//2):]))
-        priority = get_priority(common_item)
-        sol1 += priority
-        # print(f"{common_item} -> {priority}")
+    for pair in data:
+        elf1, elf2 = pair.split(",")
+        s1 = set(range(int(elf1.split("-")[0]), int(elf1.split("-")[1]) + 1))
+        s2 = set(range(int(elf2.split("-")[0]), int(elf2.split("-")[1]) + 1))
+        if not (s1 - s2) or not (s2 - s1):
+            sol1 += 1
     return sol1
 
 
@@ -44,11 +41,12 @@ def part1(data):
 @Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data):
     sol2 = 0
-    for chunk in (data[i:i + 3] for i in range(0, len(data), 3)):
-        common_item = set(chunk[0]).intersection(chunk[1], chunk[2])
-        priority = get_priority(common_item)
-        # print(f"{common_item} -> {priority}")
-        sol2 += priority
+    for pair in data:
+        elf1, elf2 = pair.split(",")
+        s1 = set(range(int(elf1.split("-")[0]), int(elf1.split("-")[1]) + 1))
+        s2 = set(range(int(elf2.split("-")[0]), int(elf2.split("-")[1]) + 1))
+        if s1.intersection(s2):
+            sol2 += 1
     return sol2
 
 
