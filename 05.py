@@ -1,34 +1,32 @@
-import re
-from rich import print
 import copy
-import rich
-from pprint import pprint as pp
 import logging
+import re
+import rich
 import time
-from copy import deepcopy
 
-from PIL import Image, ImageDraw 
 from collections import Counter, defaultdict
 from codetiming import Timer
+from PIL import Image, ImageDraw 
+from pprint import pprint as pp
+from rich import print
 
 from utils import SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list, split_in_chunks
 
 YEAR = 2022
 DAY = 5
 
-
 #Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
+    """
+    We'll parse the input line by line. The first block will be put into [tempstack] to be parsed later, the empy line will switch the boolean parse orders, and the rest of the lines will be parsed and put into the [orders] list.
+    """
     data = get_data(YEAR, DAY, SESSIONS, strip=False, example=False)
 
     stacks = []
     orders = []
     tempstack = []
     parse_orders = False
-    """
-    We'll parse the input line by line. The first block will be put into [tempstack] to be parsed, the empy line will switch the boolean parse orders,
-    and the rest of the lines will be parsed and put into the [orders] list.
-    """
+
     for line in data:
         if line == '\n':
             parse_orders = True
@@ -42,7 +40,7 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
             orders.append([int(n), int(mfrom), int(mto)])
 
     """
-    tempstack will be reversed, and then the first line will be parsed for non null characters to detect the labels. Then, every value from every line will be put into a stack
+    tempstack will be reversed, and then the first line will be parsed for non null characters to detect the labels. Then, every value from every line will be put into a stack list inside stacks.
     """
     tempstack.reverse()
 
@@ -79,7 +77,7 @@ def part1(data):
 @Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data):
     """
-    First, stacks and orders will be extracted data.
+    First, stacks and orders will be extracted from data.
     Parsing the orders, for every order, we'll make a tempslist from the final subsection of the appropriate stack. Then the same section will be
     deleted from the from stack, and extended (inserted at the end) into the appropriate to-stack.
     The solution will be a joined string from the last element of every stack.
