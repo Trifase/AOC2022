@@ -37,7 +37,7 @@ def split_in_chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
 
-def get_data(year, day, sessions, integers=False, example=False):
+def get_data(year, day, sessions, strip=True, integers=False, example=False):
     import os.path
     import requests
     import sys
@@ -62,9 +62,9 @@ def get_data(year, day, sessions, integers=False, example=False):
         data = open(f'data/{day}.txt', 'r')
 
     if integers:
-        return [int(l.strip()) for l in data.readlines()]
+        return [int(l.strip()) if strip else int(l) for l in data.readlines()]
     else:
-        return [l.strip() for l in data.readlines()]
+        return [l.strip() if strip else l for l in data.readlines()]
 
 def get_example(day, integers=False):
     with open(f'data/{day}-example.txt', 'r') as file:
