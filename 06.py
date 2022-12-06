@@ -1,20 +1,9 @@
-import copy
-import logging
-import re
-import rich
-import time
-
-from collections import Counter, defaultdict
-from codetiming import Timer
-from PIL import Image, ImageDraw 
 from pprint import pprint as pp
+
+from codetiming import Timer
 from rich import print
 
-from utils import (
-    SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, 
-    get_example, split_list, split_in_chunks, sliding_window,
-)
-
+from utils import (SESSIONS, get_data, sliding_window)
 
 YEAR = 2022
 DAY = 6
@@ -31,7 +20,6 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     data = get_data(YEAR, DAY, SESSIONS, strip=True, example=False)
 
 
-
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
 def part1(data):
@@ -46,8 +34,6 @@ def part1(data):
             if len(set(x for x in window)) == LENGTH:
                 sol1 = index + LENGTH
                 break
-    
-
     return sol1
 
 
