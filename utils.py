@@ -42,14 +42,17 @@ def split_in_chunks(lst, n):
         yield lst[i:i + n]
 
 def get_data(year, day, sessions, strip=True, integers=False, example=False):
-
+    USER_AGENT = {}
 
     if not os.path.isfile(f'data/{day}-example.txt'):
         open(f'data/{day}-example.txt', 'w').close()
 
     if not os.path.isfile(f'data/{day}.txt'):
         url = f"https://adventofcode.com/{str(year)}/day/{str(day)}/input"
-        headers = {'Cookie': f'session={sessions}'}
+        headers = {
+            'Cookie': f'session={sessions}',
+            'User-Agent': 'github.com/Trifase/AOC2022 by luca.bellanti@gmail.com',
+        }
         r = requests.get(url, headers=headers)
 
         if r.status_code == 200:
