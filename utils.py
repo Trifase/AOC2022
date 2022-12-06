@@ -1,10 +1,14 @@
 import re
+import dotenv
+import os
+import os.path
+import requests
+import sys
+
 from dataclassy import dataclass
 
-SESSIONS = [
-    '53616c7465645f5fa84dc053d6450788a4e374255929271bab87b5571810b6b409d259985976f323a7d689eec97c6cec3ffd7edcba32898480c58f3d345323b7',
-    '53616c7465645f5f31bd76685552b94983dce5c1a20ee21a319c38307f1aded11ec8cac034efc583a546d4d53d1f360cc9b8b75bd8694953df05f00bf1af3d31'
-    ]
+dotenv.load_dotenv()
+SESSIONS = os.environ["AOC_SESSION"]
 
 
 # Utilities
@@ -38,16 +42,14 @@ def split_in_chunks(lst, n):
         yield lst[i:i + n]
 
 def get_data(year, day, sessions, strip=True, integers=False, example=False):
-    import os.path
-    import requests
-    import sys
+
 
     if not os.path.isfile(f'data/{day}-example.txt'):
         open(f'data/{day}-example.txt', 'w').close()
 
     if not os.path.isfile(f'data/{day}.txt'):
         url = f"https://adventofcode.com/{str(year)}/day/{str(day)}/input"
-        headers = {'Cookie': f'session={sessions[0]}'}
+        headers = {'Cookie': f'session={sessions}'}
         r = requests.get(url, headers=headers)
 
         if r.status_code == 200:
