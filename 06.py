@@ -12,6 +12,7 @@ def sliding_window(lista: list, length: int) -> list:
     for i in range(0, len(lista) - length + 1):
         yield lista[i:i + length]
 
+
 #Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     """
@@ -61,4 +62,3 @@ s2 = part2(data)
 print("=========================")
 print(f"Soluzione Parte 1: [{s1}]")
 print(f"Soluzione Parte 2: [{s2}]")
-
