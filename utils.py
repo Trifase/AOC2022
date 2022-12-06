@@ -78,3 +78,7 @@ def split_list(list):
     for y in '\n'.join(list).split('\n\n'):
         l.append([x for x in y.split('\n')])
     return l
+
+def sliding_window(lista: list, length: int) -> list:
+    for i in range(0, len(lista) - length + 1):
+        yield lista[i:i + length]
