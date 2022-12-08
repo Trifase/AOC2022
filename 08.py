@@ -20,7 +20,7 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
 
 
 
-def get_arms(coord, data):
+def get_arms(coord: tuple[int, int], data: list[str]) -> list[list[int]]:
     """
     This will return a list of four list (arms), each containing the value of all the trees in all 4 directions, origin not included, ordered towards the edges.
     """
@@ -38,7 +38,7 @@ def get_arms(coord, data):
     return [list(reversed(top)), bottom, list(reversed(left)), right]
 
 
-def is_visible(coord, data) -> bool:
+def is_visible(coord: tuple[int, int], data: list[str]) -> bool:
     """
     This will check that the tree in coord is the tallest in at least one of the arms, and thus is visible from at least a direction
     """
@@ -52,7 +52,7 @@ def is_visible(coord, data) -> bool:
 
     return False
 
-def get_scenic_score(coord, data):
+def get_scenic_score(coord: tuple[int, int], data: list[str]) -> int:
     """
     This will calculate the scenic score for a tree in coord.
     It will get all arms from that tree and checks where the nearest tree with equal or higher heights is.
@@ -83,7 +83,8 @@ def get_scenic_score(coord, data):
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
-def part1(data):
+def part1(data: list[str]):
+
     """
     This iterate every tree in the matrix and checks if it's visible.
     Sol1 is the sum of all the visible trees
