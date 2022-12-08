@@ -47,15 +47,15 @@ def is_visible(coord, data) -> bool:
     height = data[y][x]
     arms = get_arms(coord, data)
 
-    for arm in arms:
-        if all(x < height for x in arm):
-            return True
+    if any(all(x < height for x in arm) for arm in arms):
+        return True
+
     return False
 
 def get_scenic_score(coord, data):
     """
     This will calculate the scenic score for a tree in coord.
-    It will get all arms from that tree and checks where the nearest tree with equal or highter heights is.
+    It will get all arms from that tree and checks where the nearest tree with equal or higher heights is.
     Will return the math.prod() of the distance for the 4 directions.
     """
     y = coord[0]
@@ -107,7 +107,8 @@ def part1(data):
 def part2(data):
     """
     This will calculate the scenic score for every tree in the matrix
-    and return the max scenic score"""
+    and return the max scenic score
+    """
 
     sol2 = 0
     scenic_scores = []
