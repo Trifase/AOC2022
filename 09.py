@@ -93,10 +93,9 @@ def part2(data):
     """
     In a list (rope) we'll add a head.
     Then we will append 9 tail pieces, every one of them will be attached_to to the previous.
-    We'll parte every line to grab the (dir)ection
-    and the (amount) of moving steps.
-    For every step in (dir), we'll move head with head.move() and we'll move all the tail pieces
-    with a for loop. 
+    We'll parse every line to grab the (dir)ection and the (amount) of moving steps.
+    For every step in (dir), we'll move head with head.move() according to the input
+    and we'll move all the tail pieces calling tail.follow() with a for-loop. 
     We'll save every position the last tail visits in a (visited) set (so we won't have duplicates).
     We'll solve getting the lenght of the set.
     """
@@ -107,7 +106,10 @@ def part2(data):
     visited.add((0, 0))
 
     rope = []
+    # We add the head
     rope.append(RopePiece())
+
+    # We add all the tails, each one attached_to the previous one
     for i in range(9):
         rope.append(RopePiece(attached_to=rope[-1]))
 
