@@ -4,32 +4,10 @@ import math
 from codetiming import Timer
 from rich import print
 from dataclassy import dataclass
-from utils import (SESSIONS, get_data)
+from utils import (SESSIONS, get_data, MovingThing)
 
 YEAR = 2022
 DAY = 9
-
-@dataclass
-class MovingThing:
-    """
-    This is the base class of a moving things in a 2D matrix. It has two coords (x and y) and
-    a move() function that takes a direction ((L)eft, (R)ight, (U)p and (D)own) and optionally an amount.
-    """
-    x: int = 0
-    y: int = 0
-    coords : tuple[int, int] = (0, 0)
-    def move(self, dir: str, units: int=1):
-        match dir:
-            case 'U':
-                self.y += units
-            case 'D':
-                self.y -= units
-            case 'R':
-                self.x += units
-            case 'L':
-                self.x -= units
-
-        self.coords = (self.x, self.y)
 
 class RopePiece(MovingThing):
     """
