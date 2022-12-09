@@ -17,13 +17,30 @@ SESSIONS = os.environ["AOC_SESSION"]
 @dataclass
 class MovingThing:
     """
-    This is the base class of a moving things in a 2D matrix. It has two coords (x and y) and
-    a move() function that takes a direction ((L)eft, (R)ight, (U)p and (D)own) and optionally an amount.
+    This is the base class of a moving thing in a 2D matrix. 
+    It has two coords (x and y) and a move() function that takes 
+    a direction ((L)eft, (R)ight, (U)p and (D)own) and optionally an amount.
+    It has a move_to() to move the point to new coords.
+    You can mode like this:
+
+    point.move_to((3,6)
     
+    point.coords = 3,6
+    
+    point.x = 3
+    point.y = 6
     """
     x: int = 0
     y: int = 0
-    coords : tuple[int, int] = (0, 0)
+
+    @property
+    def coords(self):
+        return (self.x, self.y)
+    
+    @coords.setter
+    def coords(self, coords):
+        self.x = coords[0]
+        self.y = coords[1]
 
     def move(self, dir: str, units: int=1):
         match dir:
@@ -39,9 +56,7 @@ class MovingThing:
 
     def move_to(self, coords: tuple[int, int]):
         self.x = coords[0]
-        self.y = coorde[1]
-        self.coords = (self.x, self.y)
-
+        self.y = coords[1]
 
 
 def rematch(pattern, string):
