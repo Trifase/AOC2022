@@ -19,7 +19,6 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     data = get_data(YEAR, DAY, SESSIONS, strip=True, example=False)
 
 
-
 def get_arms(coord: tuple[int, int], data: list[str]) -> list[list[int]]:
     """
     This will return a list of four list (arms), each containing the value of all the trees in all 4 directions, origin not included, ordered towards the edges.
@@ -36,7 +35,6 @@ def get_arms(coord: tuple[int, int], data: list[str]) -> list[list[int]]:
     right = [data[y][n] for n in range(x + 1, MAX_X)]
 
     return [list(reversed(top)), bottom, list(reversed(left)), right]
-
 
 def is_visible(coord: tuple[int, int], data: list[str]) -> bool:
     """

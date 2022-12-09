@@ -12,6 +12,38 @@ SESSIONS = os.environ["AOC_SESSION"]
 
 
 # Utilities
+
+
+@dataclass
+class MovingThing:
+    """
+    This is the base class of a moving things in a 2D matrix. It has two coords (x and y) and
+    a move() function that takes a direction ((L)eft, (R)ight, (U)p and (D)own) and optionally an amount.
+    
+    """
+    x: int = 0
+    y: int = 0
+    coords : tuple[int, int] = (0, 0)
+
+    def move(self, dir: str, units: int=1):
+        match dir:
+            case 'U':
+                self.y += units
+            case 'D':
+                self.y -= units
+            case 'R':
+                self.x += units
+            case 'L':
+                self.x -= units
+        self.coords = (self.x, self.y)
+
+    def move_to(self, coords: tuple[int, int]):
+        self.x = coords[0]
+        self.y = coorde[1]
+        self.coords = (self.x, self.y)
+
+
+
 def rematch(pattern, string):
     return re.fullmatch(pattern, string)
 
@@ -30,11 +62,6 @@ def get_key_from_value(my_dict, to_find):
     for k,v in my_dict.items():
         if sorted(v) == sorted(to_find): return k
     return None
-
-@dataclass
-class Point:
-    x: str
-    y: str
 
 
 def split_in_chunks(lst, n):
