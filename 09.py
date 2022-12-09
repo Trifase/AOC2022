@@ -6,7 +6,6 @@ from rich import print
 from dataclassy import dataclass
 from utils import (SESSIONS, get_data)
 
-
 YEAR = 2022
 DAY = 9
 
@@ -31,7 +30,6 @@ class MovingThing:
                 self.x -= units
 
         self.coords = (self.x, self.y)
-
 
 class RopePiece(MovingThing):
     """
@@ -111,7 +109,6 @@ def part1(data: list[str]):
 
     return sol1
 
-
 # Part 2
 @Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data):
@@ -147,7 +144,6 @@ def part2(data):
 
     sol2 = len(visited)
     return sol2
-
 
 s1 = part1(data)
 s2 = part2(data)
