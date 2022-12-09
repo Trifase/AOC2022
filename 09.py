@@ -61,9 +61,8 @@ def part1(data: list[str]):
     """
     We'll instance a Head and a Tail of a rope.
     Tail will be attached_to Head.
-    We'll parse every line to grab the (dir)ection
-    and the (amount) of moving steps.
-    For every step in (dir), we'll move head with head.move() and we'll move the tail with tail.move().
+    We'll parse every line to grab the (dir)ection and the (amount) of moving steps.
+    For every step in (dir), we'll move head with head.move(dir) and we'll move the tail with tail.follow().
     We'll save every position tail visits in a (visited) set (so we won't have duplicates).
     We'll solve getting the lenght of the set.
     """
