@@ -1,21 +1,14 @@
 import copy
-import logging
-import re
-import rich
-import time
 
-from collections import Counter, defaultdict
 from codetiming import Timer
-from PIL import Image, ImageDraw 
-from pprint import pprint as pp
 from rich import print
 
-from utils import SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list, split_in_chunks
+from utils import SESSIONS, get_data
 
 YEAR = 2022
 DAY = 5
 
-#Input parsing
+# Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     """
     We'll parse the input line by line. The first block will be put into [tempstack] to be parsed later, the empy line will switch the boolean parse orders, and the rest of the lines will be parsed and put into the [orders] list.
@@ -72,7 +65,6 @@ def part1(data):
     sol1 = ''.join([s[-1] for s in stacks])
     return sol1
 
-
 # Part 2
 @Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data):
@@ -91,11 +83,9 @@ def part2(data):
     sol2 = ''.join([s[-1] for s in stacks])
     return sol2
 
-
 s1 = part1(data)
 s2 = part2(data)
 
 print("=========================")
 print(f"Soluzione Parte 1: [{s1}]")
 print(f"Soluzione Parte 2: [{s2}]")
-

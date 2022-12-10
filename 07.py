@@ -5,7 +5,7 @@ from codetiming import Timer
 from rich import print
 
 from dataclassy import dataclass
-from utils import (SESSIONS, get_data, sliding_window)
+from utils import (SESSIONS, get_data)
 
 YEAR = 2022
 DAY = 7
@@ -47,6 +47,7 @@ def populate_with_dir_under_limit(d: dict, obj: Dir, limit: int):
             populate_with_dir_under_limit(d, child, limit)
     return d
 
+
 def populate_with_dir_over_limit(d: dict, obj: Dir, limit: int):
     if obj.type == 'dir':
         size = obj.total_size()
@@ -57,7 +58,8 @@ def populate_with_dir_over_limit(d: dict, obj: Dir, limit: int):
             populate_with_dir_over_limit(d, child, limit)
     return d
 
-#Input parsing
+
+# Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     """
     We'll parse the input line by line. 
@@ -88,7 +90,6 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     data = paths[0]
 
 
-
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
 def part1(data):
@@ -99,7 +100,6 @@ def part1(data):
     sol1 = sum(x for x in newd.values())
 
     return sol1
-
 
 
 # Part 2

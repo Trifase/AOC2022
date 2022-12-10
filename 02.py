@@ -1,27 +1,16 @@
-import re
 from rich import print
-import copy
-import rich
-import pprint
-import logging
-import time
 
-from PIL import Image, ImageDraw 
-from collections import Counter, defaultdict
 from codetiming import Timer
 
-from utils import SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list
+from utils import SESSIONS, get_data
 
 YEAR = 2022
 DAY = 2
 
 
-#Input parsing
+# Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     data = get_data(YEAR, DAY, SESSIONS)
-    # data = get_example(DAY)
-
-    # print(data)
 
 points = {
     'X': 1,
@@ -89,7 +78,6 @@ def part1(data):
     for game in data:
         a, b = game.split()
         p = outcome(a, b) + points.get(b)
-        # print(f"{game} -> {p}")
         sol1 += p
     return sol1
 
@@ -102,7 +90,6 @@ def part2(data):
         a, b = game.split()
         b = what_to_play(a, b)
         p = outcome(a, b) + points.get(b)
-        # print(f"{game}: devo giocare {b}, la giocata diventa {a} {b} -> {p}")
         sol2 += p
     return sol2
 

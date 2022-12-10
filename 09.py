@@ -1,10 +1,9 @@
 from pprint import pprint as pp
-import math
 
 from codetiming import Timer
 from rich import print
-from dataclassy import dataclass
 from utils import (SESSIONS, get_data, MovingThing)
+
 
 YEAR = 2022
 DAY = 9
@@ -48,12 +47,14 @@ class RopePiece(MovingThing):
             self.y += y
             self.coords = (self.x, self.y)
 
+
 # Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     """
     We'll parse the input line by line. 
     """
     data = get_data(YEAR, DAY, SESSIONS, strip=True, example=False)
+
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
@@ -124,8 +125,10 @@ def part2(data):
     sol2 = len(visited)
     return sol2
 
+
 s1 = part1(data)
 s2 = part2(data)
+
 
 print("=========================")
 print(f"Soluzione Parte 1: [{s1}]")

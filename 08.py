@@ -6,12 +6,12 @@ from rich import print
 
 from utils import (SESSIONS, get_data)
 
+
 YEAR = 2022
 DAY = 8
 
 
-
-#Input parsing
+# Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     """
     We'll parse the input line by line. 
@@ -36,6 +36,7 @@ def get_arms(coord: tuple[int, int], data: list[str]) -> list[list[int]]:
 
     return [list(reversed(top)), bottom, list(reversed(left)), right]
 
+
 def is_visible(coord: tuple[int, int], data: list[str]) -> bool:
     """
     This will check that the tree in coord is the tallest in at least one of the arms, and thus is visible from at least a direction
@@ -49,6 +50,7 @@ def is_visible(coord: tuple[int, int], data: list[str]) -> bool:
         return True
 
     return False
+
 
 def get_scenic_score(coord: tuple[int, int], data: list[str]) -> int:
     """
@@ -76,7 +78,6 @@ def get_scenic_score(coord: tuple[int, int], data: list[str]) -> int:
         scenic_score.append(c)
 
     return math.prod(scenic_score)
-
 
 
 # Part 1

@@ -1,11 +1,10 @@
 from pprint import pprint as pp
-import math
 
 from codetiming import Timer
 from rich import print
-from dataclassy import dataclass
 from advent_of_code_ocr import convert_array_6
-from utils import (SESSIONS, get_data, MovingThing)
+from utils import (SESSIONS, get_data)
+
 
 YEAR = 2022
 DAY = 10
@@ -17,6 +16,7 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     We'll parse the input line by line. 
     """
     data = get_data(YEAR, DAY, SESSIONS, strip=True, example=False)
+
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
@@ -46,6 +46,7 @@ def part1(data: list[str]):
                 sol1 += cycle*x
 
     return sol1
+
 
 # Part 2
 @Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
@@ -96,6 +97,7 @@ def part2(data):
     sol2 = convert_array_6(final_string, fill_pixel='█', empty_pixel='.')
 
     return sol2
+
 
 s1 = part1(data)
 s2 = part2(data)

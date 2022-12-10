@@ -11,9 +11,6 @@ dotenv.load_dotenv()
 SESSIONS = os.environ["AOC_SESSION"]
 
 
-# Utilities
-
-
 @dataclass
 class MovingThing:
     """
@@ -78,13 +75,12 @@ def get_key_from_value(my_dict, to_find):
         if sorted(v) == sorted(to_find): return k
     return None
 
-
-def split_in_chunks(lst, n):
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+def split_in_chunks(lst, length):
+    for i in range(0, len(lst), length):
+        yield lst[i:i + length]
 
 def get_data(year, day, sessions, strip=True, integers=False, example=False):
-    USER_AGENT = {}
+    USER_AGENT = "github.com/Trifase/AOC2022 by luca.bellanti@gmail.com"
 
     if not os.path.isfile(f'data/{day}-example.txt'):
         open(f'data/{day}-example.txt', 'w').close()
@@ -93,7 +89,7 @@ def get_data(year, day, sessions, strip=True, integers=False, example=False):
         url = f"https://adventofcode.com/{str(year)}/day/{str(day)}/input"
         headers = {
             'Cookie': f'session={sessions}',
-            'User-Agent': 'github.com/Trifase/AOC2022 by luca.bellanti@gmail.com',
+            'User-Agent': USER_AGENT,
         }
         r = requests.get(url, headers=headers)
 
@@ -113,12 +109,6 @@ def get_data(year, day, sessions, strip=True, integers=False, example=False):
     else:
         return [l.strip() if strip else l for l in data.readlines()]
 
-def get_example(day, integers=False):
-    with open(f'data/{day}-example.txt', 'r') as file:
-        if integers:
-            return [int(l.strip()) for l in file.readlines()]
-        else:
-            return [l.strip() for l in file.readlines()]
 
 def split_list(list):
     l = []

@@ -1,26 +1,16 @@
-import re
 from rich import print
-import copy
-import rich
-import pprint
-import logging
-import time
 
-from PIL import Image, ImageDraw 
-from collections import Counter, defaultdict
 from codetiming import Timer
 
-from utils import SESSIONS, rematch, get_key_from_value, remove_duplicates, dec_to_bin, bin_to_dec, get_data, get_example, split_list, split_in_chunks
+from utils import SESSIONS, get_data
 
 YEAR = 2022
 DAY = 3
 
 
-#Input parsing
+# Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     data = get_data(YEAR, DAY, SESSIONS, example=True)
-
-# print(data)
 
 
 def get_priority(common_item):
@@ -36,7 +26,6 @@ def part1(data):
         common_item = set(rucksack[:(len(rucksack)//2)]).intersection(set(rucksack[(len(rucksack)//2):]))
         priority = get_priority(common_item)
         sol1 += priority
-        # print(f"{common_item} -> {priority}")
     return sol1
 
 
@@ -47,7 +36,6 @@ def part2(data):
     for chunk in (data[i:i + 3] for i in range(0, len(data), 3)):
         common_item = set(chunk[0]).intersection(chunk[1], chunk[2])
         priority = get_priority(common_item)
-        # print(f"{common_item} -> {priority}")
         sol2 += priority
     return sol2
 

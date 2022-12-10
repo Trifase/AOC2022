@@ -3,22 +3,23 @@ from pprint import pprint as pp
 from codetiming import Timer
 from rich import print
 
-from utils import (SESSIONS, get_data, sliding_window)
+from utils import SESSIONS, get_data
 
 YEAR = 2022
 DAY = 6
 
-def sliding_window(lista: list, length: int) -> list:
-    for i in range(0, len(lista) - length + 1):
-        yield lista[i:i + length]
 
-
-#Input parsing
+# Input parsing
 with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
     """
     We'll parse the input line by line. 
     """
     data = get_data(YEAR, DAY, SESSIONS, strip=True, example=False)
+
+
+def sliding_window(lista: list, length: int) -> list:
+    for i in range(0, len(lista) - length + 1):
+        yield lista[i:i + length]
 
 
 # Part 1
