@@ -21,7 +21,7 @@ class Monkey:
     inspected is the number of item inspected.
     """
     items: list[int] = None
-    op: str = "new = old"
+    op: callable
     divisible_by: int = 1
     if_true: int
     if_false: int
@@ -37,10 +37,9 @@ class Monkey:
         We'll increment inspected by one.
         We'll clear the list of items held.
         """
-        for item in self.items.copy():
+        for item in self.items:
 
-            old = item  # This will be referred by the eval in the next line
-            item = eval(self.op)
+            item = self.op(item)
 
             item = item//3
 
@@ -53,22 +52,22 @@ class Monkey:
 
         self.items.clear()
 
-    def do_monkey_things_p2(self, monkeys: list):
+    def do_monkey_things_p2(self, monkeys: list, mcm: int):
         """
         This is the part2 modus operandi for the monkeys.
         Because we no longer divide by 3, the numbers themselves will reach 500 digits by round 40. So we have to change things around.
-        First of all, we calculate the least common multiple of al divisible_by numbers of all the monkeys-
         Then, for each item they are holding, they execute a basic operation, done with eval() because we have a string.
         After that, if the item is divisible by divisible_by, we pass the modulo of the number and the least common multiple to the monkey with index if_true in the monkeys list,
         else we pass the modulo of the number and the least common multiple to to the monkey with index if_false in the monkey list.
         We'll increment inspected by one.
         We'll clear the list of items held.
         """
-        mcm = math.prod(x.divisible_by for x in monkeys)
-        for item in self.items.copy():
+        
+        for item in self.items:
 
-            old = item
-            item = eval(self.op)
+            # old = item
+            # item = eval(self.op)
+            item = self.op(item)
 
             if item % self.divisible_by == 0:
                 item = item % mcm
@@ -106,9 +105,12 @@ def part1(data: list[str]):
         items = [int(x.strip()) for x in monkey[1].split('Starting items: ')[-1].split(',')]
         op = monkey[2].split('Operation: ')[-1].split(' = ')[-1]
         divisible_by = int(monkey[3].split(' ')[-1])
+        op = eval(f"lambda old: {op}")
         if_true = int(monkey[4].split(' ')[-1])
         if_false = int(monkey[5].split(' ')[-1])
         monkeys.append(Monkey(items=items, op=op, divisible_by=divisible_by, if_true=if_true, if_false=if_false))
+
+
 
     for i in range(20):
         for monkey in monkeys:
@@ -126,6 +128,7 @@ def part1(data: list[str]):
 def part2(data):
     """
     For each block we instance a Monkey() parsing the list of items, the operation they do, the divisibile criterion and the two possibile outputs.
+    We calculate the least common multiple of al divisible_by numbers of all the monkeys. 
     For a number of rounds, for each round, each monkey will do_monkey_things_p2().
     In the end, we grab the two monkeys who have inspected more items, and multiply the numbers together.
     """
@@ -133,18 +136,34 @@ def part2(data):
     sol2 = 0
     monkeys: list[Monkey] = []
 
+    evals = [
+        lambda x: x * 5,
+        lambda x: x + 7,
+        lambda x: x + 5,
+        lambda x: x + 8,
+        lambda x: x + 4,
+        lambda x: x * 2,
+        lambda x: x * x,
+        lambda x: x + 6
+    ]
+
+    i = 0
     for monkey in data:
         items = [int(x.strip()) for x in monkey[1].split('Starting items: ')[-1].split(',')]
         op = monkey[2].split('Operation: ')[-1].split(' = ')[-1]
         divisible_by = int(monkey[3].split(' ')[-1])
+        op = eval(f"lambda old: {op}")
         if_true = int(monkey[4].split(' ')[-1])
         if_false = int(monkey[5].split(' ')[-1])
-        monkeys.append(Monkey(items=items, op=op, divisible_by=divisible_by, if_true=if_true, if_false=if_false))
-    
+        monkeys.append(Monkey(items=items, divisible_by=divisible_by, op=op, if_true=if_true, if_false=if_false))
+        # i += 1
+    # print(monkeys)
 
-    for i in range(10000):
+    mcm = math.prod(x.divisible_by for x in monkeys)
+    for i in range(10_000):
         for monkey in monkeys:
-            monkey.do_monkey_things_p2(monkeys)
+            monkey.do_monkey_things_p2(monkeys, mcm)
+    # print(monkeys)
 
     monkey_business = list(sorted([x.inspected for x in monkeys], reverse=True))[:2]
     sol2 = math.prod(monkey_business)
