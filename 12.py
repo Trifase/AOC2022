@@ -106,7 +106,7 @@ def dijkstra_fewest_steps(grid: list[str], start: tuple[int], end: tuple[int]) -
         return [99999, 99999]
 
 # Viz
-def draw_map(grid: list[str], gif=True):
+def draw_map(grid: list[str], gif=False):
 
     elev = {
         "S": (0, 0, 0),
@@ -141,6 +141,7 @@ def draw_map(grid: list[str], gif=True):
 
     start = find_specific_cell(grid=data, target='S')
     end = find_specific_cell(grid=data, target='E')
+    
     path = dijkstra_fewest_steps(grid=data, start=start, end=end)[1]
     im = Image.new(mode="RGB", size=(len(grid[0]), len(grid)))
 
@@ -167,6 +168,75 @@ def draw_map(grid: list[str], gif=True):
         im.save(f"viz/day{DAY}.png")
 
 
+def draw_map_p2(grid: list[str], gif=False, paths=None):
+
+    elev = {
+        "S": (0, 0, 0),
+        "E": (0, 0, 0),
+        "a": (59,118,77),
+        "b": (61,128,31),
+        "c": (65, 144, 27),
+        'd': (62, 128, 31),
+        'e': (81, 148, 29),
+        'f': (81, 148, 29),
+        'g': (106, 152, 31),
+        'h': (106, 152, 31),
+        'i': (130, 153, 34),
+        'j': (130, 153, 34),
+        'k': (146, 153, 37),
+        'l': (146, 153, 37),
+        'm': (141, 137, 39),
+        'n': (141, 137, 39),
+        'o': (113, 100, 39),
+        'p': (113, 100, 39),
+        'q': (91, 76, 49),
+        'r': (91, 76, 49),
+        's': (108, 96, 87),
+        't': (108, 96, 87),
+        'u': (150, 146, 144),
+        'v': (150, 146, 144),
+        'w': (173, 173 ,173),
+        'x': (173, 173 ,173),
+        'y': (225, 225, 225),
+        'z': (225, 225, 225)
+    }
+    paths = []
+    end = find_specific_cell(grid=data, target='E')
+    all_paths = []
+    for y in range(len(data)):
+
+        for x in range(2):
+            if data[y][x] == 'a':
+                start = (y, x)
+                results = dijkstra_fewest_steps(grid=data, start=start, end=end)
+                paths.append(results[0])
+                all_paths.append(results[1])
+
+    im = Image.new(mode="RGBA", size=(len(grid[0]), len(grid)))
+
+    pixels = im.load()
+    for y in range(len(grid)):
+        for x in range(len(grid[0])):
+            c = elev[grid[y][x]]
+            nc = tuple(x+random.randint(-2, +2) for x in c)
+            pixels[x, y] = nc
+
+    if gif:
+        im.save(f"viz/day{DAY}-p2--000.png")
+
+    i = 0
+    for path in all_paths:
+        for p in path[::-1]:
+            pixels[p[1], p[0]] = (255, 0, 0, 127)
+            if gif:
+
+                im.save(f"viz/day{DAY}-p2-{i}.png")
+
+                i += 1
+
+    if not gif:
+        im.save(f"viz/day{DAY}-p2.png")
+
 
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
@@ -190,7 +260,7 @@ def part2(data):
     sol2 = 0
     paths = []
     end = find_specific_cell(grid=data, target='E')
-
+    all_paths = []
     for y in range(len(data)):
         """
         Guardando l'input (la mappa) si ci accorge che l'unico modo per una a arrivare alla E è passare per una b.
@@ -199,8 +269,9 @@ def part2(data):
         for x in range(2):
             if data[y][x] == 'a':
                 start = (y, x)
-                paths.append(dijkstra_fewest_steps(grid=data, start=start, end=end)[0])
-
+                results = dijkstra_fewest_steps(grid=data, start=start, end=end)
+                paths.append(results[0])
+                all_paths.append(results[1])
     sol2 = min(paths)
 
     return sol2
@@ -211,6 +282,7 @@ s2 = part2(data)
 
 # Viz
 # draw_map(data)
+# draw_map_p2(data)
 
 print("=========================")
 print(f"Soluzione Parte 1: [{s1}]")
