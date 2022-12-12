@@ -58,7 +58,7 @@ def find_specific_cell(target: str, grid: list[str]) -> tuple[int]:
             if grid[y][x] == target:
                 return (y, x)
 
-def get_neighbors(coords: tuple[int], grid: list[str]) -> list[tuple[int]]:
+def get_neighbors(coords: tuple[int], grid: list[str]) -> tuple[tuple[int]]:
     y, x = coords
     neighs = get_possible_neighbors(coords, grid)
     elevs = get_possible_elevations(grid[y][x])
@@ -67,7 +67,7 @@ def get_neighbors(coords: tuple[int], grid: list[str]) -> list[tuple[int]]:
         if grid[n[0]][n[1]] == 'E' and 'z' in elevs:
             elevs = elevs + ('E', )
 
-    return [n for n in neighs if grid[n[0]][n[1]] in elevs]
+    return tuple(n for n in neighs if grid[n[0]][n[1]] in elevs)
 
 def dijkstra_fewest_steps(grid: list[str], start: tuple[int], end: tuple[int]) -> int:
 
@@ -199,7 +199,7 @@ def part2(data):
         for x in range(2):
             if data[y][x] == 'a':
                 start = (y, x)
-                paths.append(dijkstra_fewest_steps(grid=data, start=start, end=end))[0]
+                paths.append(dijkstra_fewest_steps(grid=data, start=start, end=end)[0])
 
     sol2 = min(paths)
 
