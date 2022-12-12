@@ -5,7 +5,8 @@ from codetiming import Timer
 from rich import print
 from utils import (SESSIONS, get_data)
 
-import PIL
+from PIL import Image
+import random
 
 YEAR = 2022
 DAY = 12
@@ -68,7 +69,7 @@ def get_neighbors(coords: tuple[int], grid: list[str]) -> list[tuple[int]]:
 
     return [n for n in neighs if grid[n[0]][n[1]] in elevs]
 
-def dijkstra_fewest_step(grid: list[str], start: tuple[int], end: tuple[int]) -> int:
+def dijkstra_fewest_steps(grid: list[str], start: tuple[int], end: tuple[int]) -> int:
 
     edges = {}
     for y in range(len(data)):
@@ -77,6 +78,7 @@ def dijkstra_fewest_step(grid: list[str], start: tuple[int], end: tuple[int]) ->
 
     to_visit = {start}
     distance = {start: 0}
+    source = {start: None}
     while to_visit:
         current = to_visit.pop()
 
@@ -88,12 +90,82 @@ def dijkstra_fewest_step(grid: list[str], start: tuple[int], end: tuple[int]) ->
 
             if n not in distance or next_distance < distance[n]:
                 distance[n] = next_distance
+                source[n] = current
                 to_visit.add(n)
 
+    path = []
+    v = source[end]
+
+    while v != start:
+        path.append(v)
+        v = source[v]
+
     if end in distance:
-        return distance[end]
+        return [distance[end], path]
     else:
-        return 99999
+        return [99999, 99999]
+
+# Viz
+def draw_map(grid: list[str], gif=True):
+
+    elev = {
+        "S": (0, 0, 0),
+        "E": (0, 0, 0),
+        "a": (59,118,77),
+        "b": (61,128,31),
+        "c": (65, 144, 27),
+        'd': (62, 128, 31),
+        'e': (81, 148, 29),
+        'f': (81, 148, 29),
+        'g': (106, 152, 31),
+        'h': (106, 152, 31),
+        'i': (130, 153, 34),
+        'j': (130, 153, 34),
+        'k': (146, 153, 37),
+        'l': (146, 153, 37),
+        'm': (141, 137, 39),
+        'n': (141, 137, 39),
+        'o': (113, 100, 39),
+        'p': (113, 100, 39),
+        'q': (91, 76, 49),
+        'r': (91, 76, 49),
+        's': (108, 96, 87),
+        't': (108, 96, 87),
+        'u': (150, 146, 144),
+        'v': (150, 146, 144),
+        'w': (173, 173 ,173),
+        'x': (173, 173 ,173),
+        'y': (225, 225, 225),
+        'z': (225, 225, 225)
+    }
+
+    start = find_specific_cell(grid=data, target='S')
+    end = find_specific_cell(grid=data, target='E')
+    path = dijkstra_fewest_steps(grid=data, start=start, end=end)[1]
+    im = Image.new(mode="RGB", size=(len(grid[0]), len(grid)))
+
+    pixels = im.load()
+    for y in range(len(grid)):
+        for x in range(len(grid[0])):
+            c = elev[grid[y][x]]
+            nc = tuple(x+random.randint(-2, +2) for x in c)
+            pixels[x, y] = nc
+
+    if gif:
+        im.save(f"viz/day{DAY}-000.png")
+
+    i = 0
+    for p in path[::-1]:
+        pixels[p[1], p[0]] = (220, 0, 0)
+        if gif:
+
+            im.save(f"viz/day{DAY}-{i}.png")
+
+            i += 1
+
+    if not gif:
+        im.save(f"viz/day{DAY}.png")
+
 
 
 # Part 1
@@ -104,7 +176,7 @@ def part1(data: list[str]):
     start = find_specific_cell(grid=data, target='S')
     end = find_specific_cell(grid=data, target='E')
 
-    sol1 = dijkstra_fewest_step(grid=data, start=start, end=end)
+    sol1 = dijkstra_fewest_steps(grid=data, start=start, end=end)[0]
     return sol1
 
 
@@ -127,7 +199,8 @@ def part2(data):
         for x in range(2):
             if data[y][x] == 'a':
                 start = (y, x)
-                paths.append(dijkstra_fewest_step(grid=data, start=start, end=end))
+                paths.append(dijkstra_fewest_steps(grid=data, start=start, end=end))[0]
+
     sol2 = min(paths)
 
     return sol2
@@ -135,6 +208,9 @@ def part2(data):
 
 s1 = part1(data)
 s2 = part2(data)
+
+# Viz
+# draw_map(data)
 
 print("=========================")
 print(f"Soluzione Parte 1: [{s1}]")
