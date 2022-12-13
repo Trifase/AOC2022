@@ -11,6 +11,15 @@ dotenv.load_dotenv()
 SESSIONS = os.environ["AOC_SESSION"]
 
 
+# Day 13
+def remove_empty_from_data(lista: list[str]) -> list[str]:
+    newlist = []
+    for element in lista:
+        if element:
+            newlist.append(element)
+    return newlist
+
+
 @dataclass
 class MovingThing:
     """
