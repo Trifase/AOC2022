@@ -66,14 +66,19 @@ def part1(data: list[str]):
 
     return sol1
 
-def bubble_sort(lista: list):
+def bubble_sort(lista: list) -> None:
+    """
+    In place bubble sort.
+    """
     length = len(lista)
     for passes in range(length - 1):
+
         riordinato = False
         for index in range(length - 1):
             if compare(lista[index], lista[index + 1]) is False:
                 riordinato = True
                 lista[index], lista[index + 1] = lista[index + 1], lista[index]
+
         if not riordinato:
             return 
 
