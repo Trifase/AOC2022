@@ -19,10 +19,9 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
 
 Packet: list[int | Self ] | int
 
-
 def compare(left: Packet, right: Packet) -> bool | None:
     """
-    Controlliamo i due pezzetti seguendo le istruzioni (praticamente alla lettera). Se non è True o False continuiamo a testa bassa.
+    Controlliamo i due pacchetti seguendo le istruzioni praticamente alla lettera. Se non è True o False continuiamo a testa bassa.
 
     Args:
         left (Packet): the left packet
