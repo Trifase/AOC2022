@@ -74,8 +74,8 @@ def bubble_sort(lista: list):
             if compare(lista[index], lista[index + 1]) is False:
                 riordinato = True
                 lista[index], lista[index + 1] = lista[index + 1], lista[index]
-    if not riordinato:
-        return 
+        if not riordinato:
+            return 
 
 
 # Part 2
