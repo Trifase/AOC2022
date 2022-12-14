@@ -203,25 +203,26 @@ def part2(data: set[tuple[int, int]]) -> int:
 
     """Ok listen. This is too slow. So i commented the last part and wrote a new method. 
     Kudos to Giulio (https://github.com/CapacitorSet) for the idea.
-    Basically, we start with one grain of sand. We descend a row. For each grain, we add three children, (bottomleft, down, bottomright)
-    if they are not in the same spot of points of walls. We do this for every row until the very end."""
+    Basically, we start with one grain of sand. We descend a row. For each grain, we add three
+    children: (bottomleft, down, bottomright). At the end we subtract all the wall pieces.
+    We do this for every row until the very end."""
 
     SPAWN = (0, 500)
     last_row: set = set()
-
     last_row.add(SPAWN)
 
     def get_three_children(granello, walls): 
         """return a set of three children if they are not walls"""
         y, x = granello
         children = ((y + 1, x - 1), (y + 1, x), (y + 1, x + 1))
-        return set(children).difference(walls)
+        return set(children)
 
     sol2 = 1  # Spawn point
     for _ in range(max(coord[0] for coord in walls)):
         tempset = set()
         for granello in last_row:
             tempset.update(get_three_children(granello, walls))
+        tempset = tempset.difference(walls)
         sol2 += len(tempset)
         last_row = tempset
 
