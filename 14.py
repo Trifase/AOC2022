@@ -15,6 +15,8 @@ class SandParticle(MovingThing):
     """A Sand Particle."""
 
     settled: bool = False
+    last_pos: tuple[int, int] = (0, 500)
+    last_last_pos: tuple[int, int] = (0, 500)
 
     def fall_down(self, walls: set[tuple[int, int]], sand: set[tuple[int, int]], void: int) -> tuple[bool, tuple[int,int] | None, tuple[int, int]]:
         """This is the function that simulates the falling of a particle of sand.
@@ -42,36 +44,35 @@ class SandParticle(MovingThing):
             tuple[bool, tuple[int,int] | None, tuple[int, int]]: this will return a tuple with tree values. The first is a bool:
             False when the particle reach a stop, or True when it falls in the void (part 1) or it rests on 
             the spawner coordinates (part 2). The second value is the particle coordinate when it is settled. 
-            The third value is the secondo-last position, used as spawn for the next particle
+            The third value is the third last position, used as spawn for the next particle
         """
-        last_pos = (0, 0)
+        
         while not self.settled:
             left, down, right = [(self.y + 1, self.x - 1), (self.y + 1, self.x), (self.y + 1, self.x + 1)]
-
-
+            self.last_last_pos = self.last_pos
+            
             if down not in walls and down not in sand:
-                last_pos = (self.y, self.x)
+                self.last_pos = (self.y, self.x)
                 self.y += 1
                 if self.y > void:
-                    return (True, None, last_pos)
+                    return (True, None, self.last_last_pos)
 
             elif left not in walls and left not in sand:
-                last_pos = (self.y, self.x)
+                self.last_pos = (self.y, self.x)
                 self.y += 1
                 self.x -= 1
 
             elif right not in walls and right not in sand:
-                last_pos = (self.y, self.x)
+                self.last_pos = (self.y, self.x)
                 self.y += 1
                 self.x += 1
 
             else:
-                last_pos = (self.y, self.x)
                 self.settled = True
                 if (self.y, self.x) == (0, 500):
-                    return (True, (self.y, self.x), last_pos)
+                    return (True, (self.y, self.x), self.last_last_pos)
 
-                return (False, (self.y, self.x), last_pos)
+                return (False, (self.y, self.x), self.last_last_pos)
 
 def get_wall_points(a: tuple[int, int], b: tuple[int, int]) -> set[tuple[int, int]]:
     """This function will calculate the coordinates of every point between a and b. 
@@ -107,16 +108,13 @@ def simulate_sand(walls: set[tuple[int, int]]) -> set[tuple[int, int]]:
     while not stop_sim:
         particle = SandParticle(x=spawn_x, y=spawn_y)
         stop_sim, sand_coord, last_particle = particle.fall_down(walls, sand, void)
-
         if sand_coord:
             sand.add(sand_coord)
 
-            """Ottimizzazione 1: invece di spawnare la sabbia all'inizio, la spawniamo nell'ultima posizione registrata.
-            Se è una posizione in cui la sabbia si fermerebbe, allora ricominciamo dall'inizio."""
-            if sand_coord == last_particle:
-                spawn_y, spawn_x = 0, 500
-            else:
-                spawn_y, spawn_x = last_particle
+            """Ottimizzazione 1: invece di spawnare la sabbia all'inizio, la spawniamo nella terzultima posizione registrata.
+            Ad esempio, se la particella si ferma nella posizione n, la funzione ritorna anche n-2 (temporalmente) e riutilizziamo
+            quella per spwnare la prossima"""
+            spawn_y, spawn_x = last_particle
     return sand
 
 
