@@ -14,6 +14,8 @@ EXAMPLE = False
 class SandParticle(MovingThing):
     """A Sand Particle."""
 
+    settled: bool = False
+
     def fall_down(self, walls: set[tuple[int]], sand:set[tuple[int]]) -> bool:
         """This is the function that simulates the falling of a particle of sand.
         As per instructions, it checks if the coordinates under it are not walls or not sand.
@@ -59,7 +61,7 @@ class SandParticle(MovingThing):
 
             else:
                 sand.add((self.y, self.x))
-
+                self.settled = True
                 if (self.y, self.x) == (0, 500):
                     return True
 
