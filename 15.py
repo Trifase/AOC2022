@@ -96,9 +96,7 @@ def part2(data) -> int:
 
     sol2 = 0
 
-    for y in range(3_400_000, LIMIT+1):
-        if y % 100_000 == 0:
-            print(y)
+    for y in range(0, LIMIT+1):
         sol1 = 0
         segments = []
         for sensor, beacon in data.items():
@@ -139,11 +137,8 @@ def part2(data) -> int:
             sol1 += (segment[1] - segment[0])
 
         if len(segmenti_sums) == 2 and sol1 == LIMIT - 2:
-            # print(f"alt: sol={sol1} y={y}, {segmenti_sums}")
-            # print(f"Soluzione probabile: {(((sorted(segmenti_sums)[0][1])+1)*LIMIT)+y}")
             sol2 = f"{(((sorted(segmenti_sums)[0][1])+1)*LIMIT)+y}"
-            # print(f"Soluzione probabile: {(((sorted(segmenti_sums)[0][1])+2)*LIMIT)+y}")
-            sol2 += f" or {(((sorted(segmenti_sums)[0][1])+1)*LIMIT)+y}"
+            sol2 += f" or {(((sorted(segmenti_sums)[0][1])+2)*LIMIT)+y}"
             break
     
     return sol2
