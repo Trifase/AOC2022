@@ -23,8 +23,8 @@ rps = {
     'A': "rock",
     'Y': "paper",
     'B': "paper",
-    'Z': "scissor",
-    'C': "scissor"
+    'Z': "scissors",
+    'C': "scissors"
 }
 
 equivalent = {
@@ -41,9 +41,9 @@ def outcome(a, b):
         return 3  # pareggio
     elif a == "rock" and b == 'paper':
         return 6  # vittoria
-    elif a == 'paper' and b == 'scissor':
+    elif a == 'paper' and b == 'scissors':
         return 6
-    elif a == 'scissor' and b == 'rock':
+    elif a == 'scissors' and b == 'rock':
         return 6
     else:
         return 0  # perdita

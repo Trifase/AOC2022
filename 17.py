@@ -8,7 +8,7 @@ from typing import Self
 
 YEAR = 2022
 DAY = 17
-EXAMPLE = False
+EXAMPLE = True
 
 Coord = tuple[int, int]
 
@@ -171,6 +171,31 @@ def print_field(field, piece):
             print('|' + ''.join(row) + '|')
     print()
 
+from PIL import Image
+import random
+
+def print_field_pixels(piecesets: list[set[Coord]]):
+    field = []
+    for piece in piecesets:
+        for point in piece:
+            field.append(point)
+    max_x = max(p[1] for p in field)
+    min_y = min(p[0] for p in field)
+    max_y = max(abs(p[0]) for p in field)
+    print(max_x, max_y)
+
+    im = Image.new(mode="RGB", size=(max_x, max_y))
+
+    pixels = im.load()
+    for piece in piecesets:
+        color = (random.randint(20, 240), random.randint(20, 240), random.randint(20, 240))
+        for pixel in piece:
+            try:
+                pixels[pixel[1], abs(pixel[0])] = color
+            except Exception as e:
+                print("errore")
+    im.save(f"viz/day{DAY}.png")
+
 
 
 # Input parsing
@@ -185,7 +210,7 @@ with Timer(name="Parsing", text="Parsing done: \t{milliseconds:.0f} ms"):
 # Part 1
 @Timer(name="Part 1", text="Part 1 done: \t{milliseconds:.0f} ms")
 def part1(data):
-
+    # return 0
     sol1 = 0
     spawned = 0
     base_h = 0
@@ -193,13 +218,15 @@ def part1(data):
     spawn_order = [PieceHLine, PieceCross, PieceL, PieceVLine, PieceBox]
     field: set = set()
     piece = None
+    piecesets = []
 
     for x in range(7):
         field.add((altezza_max, x))
     
 
     for order in cycle(data):
-        if spawned == 2022:
+        if spawned == 22:
+        # if spawned == 2022:
             break
         
         
@@ -233,25 +260,30 @@ def part1(data):
         if not movement:
             # print("Mi fermo!")
             # print(field)
+            pieceset = []
             for point in piece.occupied_points:
                 field.add(point)
+                pieceset.append(point)
             # print(field)
+            piecesets.append(pieceset)
             altezza_max = min(p[0] for p in field)
             piece = None
             spawned += 1
             # print(f"Nuova altezza massima: {altezza_max}")
         # quit()
-    print(altezza_max)
-    print(spawned)
+    # print(altezza_max)
+    # print(spawned)
     sol1 = base_h - altezza_max
-
+    # print_field_pixels(piecesets)
     return sol1
 
 # Part 2
 @Timer(name="Part 2", text="Part 2 done: \t{milliseconds:.0f} ms")
 def part2(data) -> int:
     sol2 = 0
-
+    spawn_order = [PieceHLine, PieceCross, PieceL, PieceVLine, PieceBox]
+    mcm = len(data) * len(spawn_order)
+    print(2022 % mcm)
     return sol2
 
 
